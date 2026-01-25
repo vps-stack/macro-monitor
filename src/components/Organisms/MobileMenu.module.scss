@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../assets/variables" as var;
 
 .mobileWrapper {
@@ -97,7 +98,7 @@
     right: 0;
     height: 100vh;
     width: min(20rem, 85vw);
-    background: linear-gradient(135deg, var.$secondary-bg 0%, darken(var.$secondary-bg, 5%) 100%);
+    background: linear-gradient(135deg, var.$secondary-bg 0%, color.adjust(var.$secondary-bg, $lightness: -5%) 100%);
     box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
     z-index: 999;
     transform: translateX(100%);
