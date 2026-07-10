@@ -1,0 +1,36 @@
+name: Deploy MacroMonitor
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Hetzner
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            set -e
+            cd /var/www/app/macroMonitor
+
+            echo "Pulling latest changes..."
+            git pull origin main
+
+            echo "Building frontend..."
+            npm install
+            npm run build
+
+            echo "Building backend..."
+            cd backend
+            npm install
+            npm run build
+
+            echo "Restarting backend with pm2..."
+            pm2 restart macromonitor
+
+            echo "Deploy finished."
