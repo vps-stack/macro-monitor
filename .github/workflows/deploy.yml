@@ -14,6 +14,9 @@ jobs:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
+          timeout: 60s
+          command_timeout: 20m
+          debug: true
           script: |
             set -e
             cd /var/www/app/macroMonitor
