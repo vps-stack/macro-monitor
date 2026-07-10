@@ -5,35 +5,90 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Hetzner
-        uses: appleboy/ssh-action@v1.0.3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.HETZNER_HOST }}
-          username: ${{ secrets.HETZNER_USER }}
-          key: ${{ secrets.HETZNER_SSH_KEY }}
-          timeout: 60s
-          command_timeout: 20m
-          debug: true
-          script: |
-            set -e
-            cd /var/www/app/macroMonitor
+          node-version: '20.20.2'
 
-            echo "Pulling latest changes..."
-            git pull origin main
+      # --- Frontend ---
+      - name: Create frontend .env.production
+        run: |
+          cat <<EOF > .env.production
+          VITE_CLOUDINARY_URL=https://res.cloudinary.com/dzgj2ovq2/image/upload/
+          VITE_API_URL=/api
+          VITE_USDA_API_KEY=${{ secrets.VITE_USDA_API_KEY }}
+          EOF
 
-            echo "Building frontend..."
-            npm install
-            npm run build
+      - name: Install & build frontend
+        run: |
+          npm ci
+          npm run build
 
-            echo "Building backend..."
-            cd backend
-            npm install
-            npm run build
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+          retention-days: 3
 
-            echo "Restarting backend with pm2..."
-            pm2 restart macromonitor
+      # --- Backend ---
+      - name: Install & build backend
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
 
-            echo "Deploy finished."
+      - name: Upload backend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-dist
+          path: |
+            backend/dist/
+            backend/package.json
+            backend/package-lock.json
+          retention-days: 3
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, hetzner]   # Label(s) beim Runner-Setup vergeben
+    steps:
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: /tmp/deploy-macromonitor/frontend
+
+      - name: Download backend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-dist
+          path: /tmp/deploy-macromonitor/backend
+
+      - name: Deploy frontend
+        run: |
+          set -e
+          rm -rf /var/www/app/macroMonitor/dist
+          cp -r /tmp/deploy-macromonitor/frontend /var/www/app/macroMonitor/dist
+
+      - name: Deploy backend
+        run: |
+          set -e
+          rm -rf /var/www/app/macroMonitor/backend/dist
+          cp -r /tmp/deploy-macromonitor/backend/dist /var/www/app/macroMonitor/backend/dist
+          cp /tmp/deploy-macromonitor/backend/package.json /var/www/app/macroMonitor/backend/package.json
+          cp /tmp/deploy-macromonitor/backend/package-lock.json /var/www/app/macroMonitor/backend/package-lock.json
+
+      - name: Install backend production dependencies
+        working-directory: /var/www/app/macroMonitor/backend
+        run: npm ci --omit=dev
+
+      - name: Restart app with pm2
+        run: pm2 restart macromonitor
+
+      - name: Clean up temp files
+        if: always()
+        run: rm -rf /tmp/deploy-macromonitor
