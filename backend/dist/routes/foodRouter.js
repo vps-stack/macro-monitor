@@ -27,10 +27,11 @@ const express_1 = require("express");
 const food = __importStar(require("../controllers/nutrientsController"));
 const newProductSchema_1 = require("../schemas/newProductSchema");
 const schema_validation_1 = require("../middleware/schema-validation");
+const auth_1 = require("../middleware/auth");
 const foodRouter = (0, express_1.Router)();
 foodRouter
-    .post("/food", newProductSchema_1.productSchema, schema_validation_1.validateSchema, food.createFood)
-    .get("/food", food.getAllFood)
-    .put("/food/images/:id", food.uploadImage)
-    .delete("/food", food.deleteFoodItem);
+    .post("/food", auth_1.authenticate, newProductSchema_1.productSchema, schema_validation_1.validateSchema, food.createFood)
+    .get("/food", auth_1.authenticate, food.getAllFood)
+    .put("/food/images/:id", auth_1.authenticate, food.uploadImage)
+    .delete("/food", auth_1.authenticate, food.deleteFoodItem);
 exports.default = foodRouter;

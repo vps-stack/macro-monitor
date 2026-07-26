@@ -2,6 +2,13 @@ import { Options } from "../context/OptionContext";
 
 const URL: string = import.meta.env.VITE_API_URL || "/api";
 
+type ApiError = Error & {
+   response?: {
+      data: unknown;
+      status: number;
+   };
+};
+
 /**
  * Check if user is authenticated (doesn't redirect on failure)
  */
@@ -38,7 +45,7 @@ const apiFetch = async (url: string, options?: RequestInit) => {
 
       // Extract error message from response
       const errorData = await response.json().catch(() => ({ message: "Unauthorized" }));
-      const error: any = new Error(errorData.message || "Unauthorized");
+      const error = new Error(errorData.message || errorData.msg || "Unauthorized") as ApiError;
       error.response = { data: errorData, status: 401 };
       throw error;
    }
@@ -46,9 +53,9 @@ const apiFetch = async (url: string, options?: RequestInit) => {
    if (!response.ok) {
       // Handle other error responses (400, 500, etc.)
       const errorData = await response.json().catch(() => ({}));
-      const error: any = new Error(
-         errorData.message || errorData.error || `Error: ${response.status}`
-      );
+      const error = new Error(
+         errorData.message || errorData.msg || errorData.error || `Error: ${response.status}`
+      ) as ApiError;
       error.response = { data: errorData, status: response.status };
       throw error;
    }
@@ -90,6 +97,30 @@ export const logout = async () => {
 
 export const getProfile = async () => {
    return apiFetch(URL + "/profile");
+};
+
+export const updateEmail = async (email: string, currentPassword: string) => {
+   return apiFetch(URL + "/profile/email", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, currentPassword }),
+   });
+};
+
+export const updatePassword = async (currentPassword: string, newPassword: string) => {
+   return apiFetch(URL + "/profile/password", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentPassword, newPassword }),
+   });
+};
+
+export const deleteAccount = async (password: string) => {
+   return apiFetch(URL + "/profile", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+   });
 };
 
 // ============================================

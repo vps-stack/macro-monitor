@@ -25,9 +25,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const option = __importStar(require("../controllers/optionsController"));
+const auth_1 = require("../middleware/auth");
 const optionsRouter = (0, express_1.Router)();
 optionsRouter
-    .post("/options", option.createOptions)
-    .patch("/options", option.updateOptions)
-    .get("/options", option.getAllOptions);
+    .post("/options", auth_1.authenticate, option.createOptions)
+    .patch("/options", auth_1.authenticate, option.updateOptions)
+    .get("/options", auth_1.authenticate, option.getAllOptions);
 exports.default = optionsRouter;

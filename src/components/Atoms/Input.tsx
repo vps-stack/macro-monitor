@@ -9,6 +9,9 @@ type InputProps = {
   name: string;
   required?: boolean;
   disabled?: boolean;
+  minLength?: number;
+  autoComplete?: string;
+  appearance?: "light" | "dark";
 };
 
 export default function Input({
@@ -18,11 +21,15 @@ export default function Input({
   onChange,
   name,
   required = false,
-  disabled
+  disabled,
+  minLength,
+  autoComplete,
+  appearance = "light",
 }: InputProps) {
   return (
     <input
-      className={styles.input}
+      className={`${styles.input} ${styles[appearance]}`}
+      id={name}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -30,6 +37,8 @@ export default function Input({
       name={name}
       required={required}
       disabled={disabled}
+      minLength={minLength}
+      autoComplete={autoComplete}
     />
   );
 }

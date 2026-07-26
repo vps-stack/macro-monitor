@@ -18,3 +18,26 @@
     color: #9ca3af;
   }
 }
+
+.light {
+  background-color: white;
+  color: var.$font-dark;
+}
+
+.dark {
+  box-sizing: border-box;
+  background-color: var.$panel-bg-secondary-1;
+  color: var.$font-light;
+  border-color: transparent;
+  border-radius: 99vh;
+
+  &:focus {
+    border-color: var.$button-primary-2;
+    box-shadow: 0 0 0 3px rgba(99, 158, 97, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}

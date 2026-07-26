@@ -50,6 +50,7 @@ export default function MobileMenu() {
       { to: "/products", label: "Products" },
       { to: "/archive", label: "Archive" },
       { to: "/options", label: "Options" },
+      { to: "/account", label: "Account" },
    ];
 
    return (

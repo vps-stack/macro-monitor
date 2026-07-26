@@ -25,6 +25,9 @@ export default function Navigation() {
                   <img className={styles.cog} src={cog} alt="cog wheel icon" />
                </Link>
             </li>
+            <li>
+               <Link to="/account">Account</Link>
+            </li>
             <li onClick={handleLogout}>
                <Link to="#">Logout</Link>
             </li>

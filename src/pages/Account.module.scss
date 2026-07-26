@@ -1,0 +1,153 @@
+@use "../assets/variables" as var;
+
+.account {
+   min-height: 100vh;
+   padding-bottom: 4rem;
+   background-color: var.$secondary-bg;
+   color: var.$font-light;
+
+   .navWrapper {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
+   }
+
+   > h1 {
+      margin: 0.35em 0 0.55em;
+      text-align: center;
+      font-family: "Medula One", cursive;
+      font-size: clamp(3.5rem, 4vw, 5.5rem);
+      font-weight: 400;
+   }
+}
+
+.content {
+   width: min(90%, 760px);
+   margin: 0 auto;
+}
+
+.card {
+   margin-bottom: 1.5rem;
+   padding: clamp(1.25rem, 4vw, 2rem);
+   background-color: var.$panel-bg-secondary-2;
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   border-radius: 18px;
+   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+
+   form {
+      max-width: 560px;
+   }
+}
+
+.sectionHeader {
+   margin-bottom: 1.5rem;
+
+   h2 {
+      margin-bottom: 0.4rem;
+      font-size: clamp(1.25rem, 2vw, 1.6rem);
+   }
+
+   p {
+      color: rgba(255, 255, 255, 0.68);
+      line-height: 1.55;
+   }
+}
+
+.profileDetails {
+   display: grid;
+   gap: 0.75rem;
+
+   div {
+      display: grid;
+      grid-template-columns: minmax(7rem, 0.4fr) 1fr;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      background-color: var.$panel-bg-secondary-1;
+      border-radius: 12px;
+   }
+
+   dt {
+      color: rgba(255, 255, 255, 0.62);
+      font-weight: 600;
+   }
+
+   dd {
+      overflow-wrap: anywhere;
+   }
+}
+
+.action {
+   display: flex;
+   justify-content: flex-end;
+   margin-top: 0.5rem;
+}
+
+.success,
+.error {
+   margin: -0.25rem 0 1.25rem;
+   padding: 0.75rem 1rem;
+   border-radius: 8px;
+   font-size: 0.9rem;
+}
+
+.success {
+   color: #d9f8dc;
+   background-color: rgba(99, 158, 97, 0.2);
+   border: 1px solid rgba(99, 158, 97, 0.7);
+}
+
+.error {
+   color: #ffdede;
+   background-color: rgba(243, 32, 32, 0.15);
+   border: 1px solid rgba(243, 32, 32, 0.65);
+}
+
+.dangerZone {
+   border-color: rgba(243, 32, 32, 0.55);
+
+   .sectionHeader h2 {
+      color: #ff7b7b;
+   }
+}
+
+.deleteConfirmation {
+   padding-top: 0.5rem;
+}
+
+.dangerActions {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   gap: 0.75rem;
+}
+
+@media screen and (max-width: 1049px) {
+   .account > h1 {
+      margin-top: 0.7em;
+   }
+}
+
+@media screen and (max-width: 560px) {
+   .account {
+      padding-bottom: 2rem;
+   }
+
+   .content {
+      width: min(92%, 760px);
+   }
+
+   .profileDetails div {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+   }
+
+   .action,
+   .dangerActions {
+      justify-content: stretch;
+
+      button {
+         justify-content: center;
+         width: 100%;
+      }
+   }
+}

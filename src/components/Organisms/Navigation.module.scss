@@ -7,13 +7,14 @@ nav {
    .desktopMenu {
       display: flex;
       justify-content: space-between;
-      width: 50%;
+      gap: clamp(1rem, 2vw, 2.5rem);
+      width: min(85%, 980px);
       padding: 1em 0 0 1em;
       @media screen and (max-width: 1049px) {
          display: none;
       }
       li {
-         margin: 0 1em;
+         margin: 0;
          color: var.$font-light;
          list-style-type: none;
          a {

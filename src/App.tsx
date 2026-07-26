@@ -10,6 +10,7 @@ import ProtectedLayout from "./components/ProtectedLayout";
 import { AuthProvider } from "./context/AuthContext";
 import Imprint from "./pages/Imprint";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Account from "./pages/Account";
 import ScrollToTop from "./services/ScrollToTop";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                      <Route path="/products" element={<Products />} />
                      <Route path="/archive" element={<Archive />} />
                      <Route path="/options" element={<Options />} />
+                     <Route path="/account" element={<Account />} />
                   </Route>
 
                   <Route path="*" element={<Navigate to="/" replace />} />

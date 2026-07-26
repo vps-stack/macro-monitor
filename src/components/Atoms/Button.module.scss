@@ -62,6 +62,22 @@ button {
       transform: translateY(0);
    }
 }
+
+.typeDanger {
+   padding: 0.875rem 2rem;
+   background-color: var.$button-exit;
+   color: white;
+   border-radius: 99vh;
+   font-size: 1rem;
+   font-weight: 600;
+   transition: all 0.3s ease;
+
+   &:hover {
+      background-color: transparent;
+      color: var.$button-exit;
+      outline: 3px solid var.$button-exit;
+   }
+}
 //  button.typeA{
 //     padding: 1em 3em;
 //     background-color: var.$button-primary-1;

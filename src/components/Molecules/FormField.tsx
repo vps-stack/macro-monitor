@@ -11,6 +11,9 @@ type FormFieldProps = {
   disabled?: boolean;
   required?: boolean;
   minLength?: number;
+  autoComplete?: string;
+  placeholder?: string;
+  appearance?: "light" | "dark";
 };
 
 export default function FormField({
@@ -22,10 +25,17 @@ export default function FormField({
   error,
   disabled,
   required = false,
+  minLength,
+  autoComplete,
+  placeholder,
+  appearance = "light",
 }: FormFieldProps) {
   return (
     <div className={styles.fieldWrapper}>
-      <label className={styles.label} htmlFor={name}>
+      <label
+        className={`${styles.label} ${appearance === "dark" ? styles.darkLabel : ""}`}
+        htmlFor={name}
+      >
         {label}
         {required && <span className={styles.required}>*</span>}
       </label>
@@ -34,8 +44,12 @@ export default function FormField({
         name={name}
         value={value}
         onChange={onChange}
-         disabled={disabled}
+        disabled={disabled}
         required={required}
+        minLength={minLength}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        appearance={appearance}
       />
       {error && <span className={styles.error}>{error}</span>}
     </div>

@@ -25,10 +25,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const consumption = __importStar(require("../controllers/consumptionController"));
+const auth_1 = require("../middleware/auth");
 const consumptionRouter = (0, express_1.Router)();
 consumptionRouter
-    .post("/consumption", consumption.createConsumption)
-    .get("/consumption", consumption.getConsumption)
-    .delete("/consumption/:id", consumption.deleteConsumptionItem)
-    .delete("/consumption", consumption.deleteConsumption);
+    .post("/consumption", auth_1.authenticate, consumption.createConsumption)
+    .get("/consumption", auth_1.authenticate, consumption.getConsumption)
+    .delete("/consumption/:id", auth_1.authenticate, consumption.deleteConsumptionItem)
+    .delete("/consumption", auth_1.authenticate, consumption.deleteConsumption);
 exports.default = consumptionRouter;

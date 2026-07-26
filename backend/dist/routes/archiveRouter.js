@@ -25,10 +25,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const archive = __importStar(require("../controllers/archiveController"));
+const auth_1 = require("../middleware/auth");
 const archiveRouter = (0, express_1.Router)();
 archiveRouter
-    .post("/archive", archive.createArchive)
-    .get("/archive", archive.getArchive)
-    .delete("/archive/:id", archive.deleteArchiveItem)
-    .delete("/archive", archive.deleteArchive);
+    .post("/archive", auth_1.authenticate, archive.createArchive)
+    .get("/archive", auth_1.authenticate, archive.getArchive)
+    .delete("/archive/:id", auth_1.authenticate, archive.deleteArchiveItem)
+    .delete("/archive", auth_1.authenticate, archive.deleteArchive);
 exports.default = archiveRouter;

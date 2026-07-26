@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Options = void 0;
 const mongoose_1 = require("mongoose");
 const optionsSchema = new mongoose_1.Schema({
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
     calories: { type: Number, default: 2000 },
     carbohydrates: { type: Number, default: 0.55 },
     fat: { type: Number, default: 0.3 },
