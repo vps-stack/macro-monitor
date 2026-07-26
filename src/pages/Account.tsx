@@ -246,12 +246,14 @@ export default function Account() {
                </div>
 
                {!showDeleteConfirmation ? (
-                  <Button
-                     label="Delete account"
-                     type="button"
-                     appearance="typeDanger"
-                     onClick={() => setShowDeleteConfirmation(true)}
-                  />
+                  <div className={styles.action}>
+                     <Button
+                        label="Delete account"
+                        type="button"
+                        appearance="typeDanger"
+                        onClick={() => setShowDeleteConfirmation(true)}
+                     />
+                  </div>
                ) : (
                   <form onSubmit={handleDelete} className={styles.deleteConfirmation}>
                      <FormField

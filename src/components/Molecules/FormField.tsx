@@ -31,7 +31,11 @@ export default function FormField({
   appearance = "light",
 }: FormFieldProps) {
   return (
-    <div className={styles.fieldWrapper}>
+    <div
+      className={`${styles.fieldWrapper} ${
+        appearance === "dark" ? styles.fullWidth : ""
+      }`}
+    >
       <label
         className={`${styles.label} ${appearance === "dark" ? styles.darkLabel : ""}`}
         htmlFor={name}
