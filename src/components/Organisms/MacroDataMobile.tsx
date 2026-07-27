@@ -29,4 +29,4 @@ export default function MacroDataMobile({data}:MacroDataMobileProps) {
         <span className={styles.amount}>{data.amount}</span>
     </div>
   )
-};
+}

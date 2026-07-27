@@ -5,7 +5,8 @@ const consumption_1 = require("../models/consumption");
 const createConsumption = async (req, res) => {
     const authReq = req;
     try {
-        const itemsWithUserId = authReq.body.map((item) => ({
+        const items = authReq.body;
+        const itemsWithUserId = items.map((item) => ({
             ...item,
             userId: authReq.userId,
         }));

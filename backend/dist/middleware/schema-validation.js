@@ -10,6 +10,5 @@ const validateSchema = (req, res, next) => {
     else {
         res.status(400).json({ errors: errors.array() });
     }
-    ;
 };
 exports.validateSchema = validateSchema;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import Button from "../Atoms/Button";
 import FormField from "../Molecules/FormField";
 import styles from "./AuthModal.module.scss";
@@ -41,23 +41,10 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }: Au
 
          onClose();
          navigate("/products");
-      } catch (err: any) {
+      } catch (err: unknown) {
          console.error("Auth error:", err);
-
-         // Extract actual error message from API response
-         let errorMessage = "Authentication failed. Please try again.";
-
-         if (err.response?.data?.message) {
-            // Most common: { message: "Invalid credentials" }
-            errorMessage = err.response.data.message;
-         } else if (err.response?.data?.error) {
-            // Alternative: { error: "User not found" }
-            errorMessage = err.response.data.error;
-         } else if (err.message) {
-            // Fallback: err.message
-            errorMessage = err.message;
-         }
-
+         const errorMessage =
+            err instanceof Error ? err.message : "Authentication failed. Please try again.";
          setError(errorMessage);
       } finally {
          setLoading(false);

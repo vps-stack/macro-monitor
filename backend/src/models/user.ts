@@ -1,12 +1,14 @@
-import {Schema, model} from "mongoose";
+import { HydratedDocument, Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 
-type User = {
+export type UserData = {
     email: string;
     password: string;
     name?: string;
     createdAt: Date;
 }
+
+export type UserDocument = HydratedDocument<UserData>;
 
 const userSchema = new Schema({
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -21,8 +23,9 @@ userSchema.pre('save', async function(next) {
     try {
         this.password = await bcrypt.hash(this.password, 12);
         next();
-    } catch (error: any) {
-        next(error);
+    } catch (error: unknown) {
+        const passwordError = error instanceof Error ? error : new Error("Failed to hash password");
+        next(passwordError);
     }
 });
 
@@ -30,4 +33,4 @@ userSchema.methods.comparePassword = async function(password: string): Promise<b
     return bcrypt.compare(password, this.password);
 };
 
-export const User = model<User>("User", userSchema);
+export const User = model<UserData>("User", userSchema);

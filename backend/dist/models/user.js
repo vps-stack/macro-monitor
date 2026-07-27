@@ -20,7 +20,8 @@ userSchema.pre('save', async function (next) {
         next();
     }
     catch (error) {
-        next(error);
+        const passwordError = error instanceof Error ? error : new Error("Failed to hash password");
+        next(passwordError);
     }
 });
 userSchema.methods.comparePassword = async function (password) {

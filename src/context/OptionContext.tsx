@@ -60,4 +60,4 @@ export default function OptionsProvider({children}:OptionProvideProps){
         {children}
         </OptionContext.Provider>
     )
-};
+}

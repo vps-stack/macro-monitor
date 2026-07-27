@@ -1,5 +1,5 @@
 import styles from "./MacronutrientInput.module.scss";
-import { Nutrient } from "./OptionItem";
+import { Nutrient } from "../../types/Nutrient";
 
 type MacronutrientProps = {
     label: string

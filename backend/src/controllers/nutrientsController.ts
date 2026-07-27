@@ -49,14 +49,10 @@ export const uploadImage = async (req: Request, res: Response): Promise<void> =>
                 upload_preset: UPLOAD_PRESET,
                 public_id: `${name}`,
                 allowed_formats: ["jpg", "png", "jpeg", "gif", "svg"],
-            },
-            function (error, result) {
-                if (error) console.log(error);
             }
         );
 
         if (uploadedImage) {
-            const cloudImg = uploadedImage.secure_url;
             const cloudImgPub = uploadedImage.public_id;
 
             const response = await Food.findOneAndUpdate(

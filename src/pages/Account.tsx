@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Navigation from "../components/Organisms/Navigation";
 import FormField from "../components/Molecules/FormField";
 import Button from "../components/Atoms/Button";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import {
    deleteAccount,
    updateEmail,

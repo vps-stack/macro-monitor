@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
-import { Consumption } from "../models/consumption";
+import { Consumption, type ConsumptionItem } from "../models/consumption";
 import { AuthRequest } from "../middleware/auth"; // Reuse shared interface
+
+type ConsumptionInput = Omit<ConsumptionItem, "userId">;
 
 export const createConsumption = async (req: Request, res: Response): Promise<void> => {
     const authReq = req as AuthRequest;
 
     try {
-        const itemsWithUserId = authReq.body.map((item: any) => ({
+        const items = authReq.body as ConsumptionInput[];
+        const itemsWithUserId = items.map((item) => ({
             ...item,
             userId: authReq.userId,
         }));

@@ -43,12 +43,8 @@ const uploadImage = async (req, res) => {
             upload_preset: UPLOAD_PRESET,
             public_id: `${name}`,
             allowed_formats: ["jpg", "png", "jpeg", "gif", "svg"],
-        }, function (error, result) {
-            if (error)
-                console.log(error);
         });
         if (uploadedImage) {
-            const cloudImg = uploadedImage.secure_url;
             const cloudImgPub = uploadedImage.public_id;
             const response = await nutrients_1.Food.findOneAndUpdate({ _id: authReq.params.id, userId: authReq.userId }, { image: cloudImgPub }, { new: true });
             if (authReq.body.previousImage) {

@@ -1,6 +1,6 @@
 import {Schema, model} from "mongoose";
 
-type ConsumptionItem = {
+export type ConsumptionItem = {
     userId:string
     name:string
     grams:number

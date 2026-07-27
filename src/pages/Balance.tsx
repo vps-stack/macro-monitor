@@ -45,18 +45,20 @@ export type ConsumptionItem = {
    salt: number;
 };
 
+const createInitialMacroBalance = (): MacroItem[] => [
+   { wrapperClass: "carbsWrapper", title: "Carbs", amount: 0, percent: "0%" },
+   { wrapperClass: "fatWrapper", title: "Fat", amount: 0, percent: "0%" },
+   { wrapperClass: "proteinWrapper", title: "Protein", amount: 0, percent: "0%" },
+   { wrapperClass: "saturatedFatWrapper", title: "Sat. fat", amount: 0, percent: "0%" },
+   { wrapperClass: "sugarWrapper", title: "Sugar", amount: 0, percent: "0%" },
+   { wrapperClass: "saltWrapper", title: "Salt", amount: 0, percent: "0%" },
+   { wrapperClass: "caloriesWrapper", title: "Calories", amount: 0, percent: "0%" },
+];
+
 export default function Balance() {
    const { consumption, setConsumptionData, options, setOptionsData, setArchiveItem } =
       useContext(OptionContext) || [];
-   const [macroBalance, setMacroBalance] = useState<MacroItem[]>([
-      { wrapperClass: "carbsWrapper", title: "Carbs", amount: 0, percent: "0%" },
-      { wrapperClass: "fatWrapper", title: "Fat", amount: 0, percent: "0%" },
-      { wrapperClass: "proteinWrapper", title: "Protein", amount: 0, percent: "0%" },
-      { wrapperClass: "saturatedFatWrapper", title: "Sat. fat", amount: 0, percent: "0%" },
-      { wrapperClass: "sugarWrapper", title: "Sugar", amount: 0, percent: "0%" },
-      { wrapperClass: "saltWrapper", title: "Salt", amount: 0, percent: "0%" },
-      { wrapperClass: "caloriesWrapper", title: "Calories", amount: 0, percent: "0%" },
-   ]);
+   const [macroBalance, setMacroBalance] = useState<MacroItem[]>(createInitialMacroBalance);
 
    useEffect(() => {
       const fetchOptions = async () => {
@@ -86,12 +88,8 @@ export default function Balance() {
       };
       fetchOptions();
       getData();
-   }, []);
+   }, [setConsumptionData, setOptionsData]);
 
-   useEffect(() => {
-      console.log("updated", { consumption, options });
-      calculateBalance();
-   }, [consumption]);
 
    async function deleteOneConsumptionItem(id: string) {
       await deleteConsumptionItem(id);
@@ -101,7 +99,8 @@ export default function Balance() {
       }
    }
 
-   function calculateBalance() {
+   useEffect(() => {
+      console.log("updated", { consumption, options });
       const summerizedValues = {
          calories: 0,
          carbohydrates: 0,
@@ -111,7 +110,7 @@ export default function Balance() {
          sugar: 0,
          salt: 0,
       };
-      const _macroBalance = [...macroBalance];
+      const _macroBalance = createInitialMacroBalance();
 
       consumption?.forEach((obj) => {
          summerizedValues.calories += +obj.calories;
@@ -183,7 +182,7 @@ export default function Balance() {
 
          setMacroBalance(_macroBalance);
       }
-   }
+   }, [consumption, options]);
 
    async function resetList() {
       await deleteConsumption();
@@ -218,9 +217,9 @@ export default function Balance() {
             summarizedConsumption.salt += Math.round(obj.salt || 0);
          });
          const date = new Date();
-         let day = date.getDate();
-         let month = date.getMonth() + 1;
-         let year = date.getFullYear();
+         const day = date.getDate();
+         const month = date.getMonth() + 1;
+         const year = date.getFullYear();
          const today = `${year}-${month}-${day}`;
          summarizedConsumption.date = today;
 

@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import styles from "./NewFoodPanel.module.scss";
 import MacronutrientInput from "../Molecules/MacronutrientInput";
 import Button from "../Atoms/Button";
-import { Nutrient } from "../Molecules/OptionItem";
+import { Nutrient } from "../../types/Nutrient";
 import { createFood, getAllFood, uploadImage } from "../../services/api";
 import { OptionContext } from "../../context/OptionContext";
 import { ToastContainer, Zoom } from "react-toastify";

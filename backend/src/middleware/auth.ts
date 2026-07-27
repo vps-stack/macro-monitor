@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user";
+import { User, UserDocument } from "../models/user";
 
 export interface AuthRequest extends Request {
     userId: string;
-    user?: any;
+    user?: UserDocument;
 }
 
 interface JwtPayload {

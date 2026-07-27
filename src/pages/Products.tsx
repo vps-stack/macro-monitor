@@ -78,7 +78,7 @@ export default function Products() {
       return () => {
          window.removeEventListener("scroll", handleScroll);
       };
-   }, []);
+   }, [setFoodData, setOptionsData]);
 
    useEffect(() => {
       console.log({ selectedFood });

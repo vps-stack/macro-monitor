@@ -7,5 +7,5 @@ export const validateSchema = (req:Request, res:Response, next:NextFunction) => 
         next();
     } else {
         res.status(400).json({errors:errors.array()});
-    };
+    }
 };

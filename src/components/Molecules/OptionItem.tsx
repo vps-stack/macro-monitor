@@ -1,4 +1,5 @@
 import styles from "./OptionItem.module.scss";
+import { Nutrient } from "../../types/Nutrient";
 
 // export type InputOptionTypes = {
 //   calories:number 
@@ -20,15 +21,6 @@ type OptionProps = {
   onChangeHandler:(event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export enum Nutrient {
-  Calories = "calories",
-  Carbohydrates = "carbohydrates",
-  Fat = "fat",
-  Protein = "protein",
-  SaturatedFat = "saturatedFat",
-  Sugar = "sugar",
-  Salt = "salt"
-}
 
 export default function OptionItem({label, placeholder, gramValue, value, calculated, name, onChangeHandler}: OptionProps) {
   return (
@@ -41,4 +33,4 @@ export default function OptionItem({label, placeholder, gramValue, value, calcul
         </div>
     </div>
   )
-};
+}

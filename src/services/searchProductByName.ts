@@ -10,6 +10,21 @@ export interface ProductSearchResult {
    imageUrl?: string;
 }
 
+interface UsdaFoodNutrient {
+   nutrientName?: string;
+   unitName?: string;
+   value?: number | string | null;
+}
+
+interface UsdaFood {
+   description?: string;
+   foodNutrients?: UsdaFoodNutrient[];
+}
+
+interface UsdaSearchResponse {
+   foods?: UsdaFood[];
+}
+
 export async function searchProductByName(query: string): Promise<ProductSearchResult[]> {
    try {
       console.log("Searching USDA for:", query);
@@ -32,16 +47,16 @@ export async function searchProductByName(query: string): Promise<ProductSearchR
          return [];
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as UsdaSearchResponse;
 
       if (data.foods && data.foods.length > 0) {
          const results: ProductSearchResult[] = data.foods
-            .map((food: any) => {
+            .map((food) => {
                // Helper to find nutrient by name AND unit
                const getNutrient = (nutrientName: string, unitName?: string): string => {
-                  const nutrient = food.foodNutrients?.find((n: any) => {
-                     const nameMatch = n.nutrientName === nutrientName;
-                     const unitMatch = !unitName || n.unitName === unitName;
+                  const nutrient = food.foodNutrients?.find((nutrient) => {
+                     const nameMatch = nutrient.nutrientName === nutrientName;
+                     const unitMatch = !unitName || nutrient.unitName === unitName;
                      return nameMatch && unitMatch;
                   });
                   return nutrient?.value ? String(nutrient.value) : "0";

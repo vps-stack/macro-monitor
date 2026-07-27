@@ -16,34 +16,32 @@ export default function Archive() {
       if (setArchive){
         setArchive(data);
         console.log({data});
-      };
+      }
     };
 
-    return ()=>{
-      getArchiveData();
-    };
-  },[]);
+    getArchiveData();
+  }, [setArchive]);
 
   function formatDate(dateString:string){
     const date = new Date(dateString);
     return date.toLocaleDateString('de-DE');
-  };
+  }
 
   async function deleteItem(id:string){
     await deleteArchiveItem(id);
     const data = await getArchive();
     if (setArchive){
       setArchive(data);
-    };
-  };
+    }
+  }
 
   async function resetArchive(){
     await deleteArchive();
     const data = await getArchive();
     if (setArchive){
       setArchive(data);
-    };
-  };
+    }
+  }
 
   return (
       <div className={styles.archive}>
@@ -77,4 +75,4 @@ export default function Archive() {
         </div>
       </div>
   )
-};
+}
