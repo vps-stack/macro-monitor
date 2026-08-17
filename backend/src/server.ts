@@ -10,8 +10,11 @@ import "./utils/mongodb";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { generalLimiter } from "./middleware/rate-limiter";
+import helmet from "helmet";
 
 const app = express();
+
+app.use(helmet());
 app.use(cookieParser());
 const PORT = process.env.PORT;
 
