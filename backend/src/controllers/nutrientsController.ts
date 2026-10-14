@@ -3,12 +3,9 @@ import { Food } from "../models/nutrients";
 import { cloudinary } from "../cloudinary/cloudinary";
 import dotenv from "dotenv";
 import { AuthRequest } from "../middleware/auth"; // Reuse shared interface
+import { isObjectIdOrHexString } from "mongoose";
 
 dotenv.config();
-
-type CloudinaryResult = {
-    resultKey: string;
-};
 
 export const createFood = async (req: Request, res: Response): Promise<void> => {
     const authReq = req as AuthRequest;
@@ -39,8 +36,21 @@ export const getAllFood = async (req: Request, res: Response): Promise<void> => 
 export const uploadImage = async (req: Request, res: Response): Promise<void> => {
     const authReq = req as AuthRequest;
     const UPLOAD_PRESET = process.env.UPLOAD_PRESET;
+    let uploadedImageId: string | undefined;
 
     try {
+        if (!isObjectIdOrHexString(authReq.params.id)) {
+            res.status(404).json({ msg: "Food not found!" });
+            return;
+        }
+
+        const foodFilter = { _id: authReq.params.id, userId: authReq.userId };
+        const food = await Food.findOne(foodFilter);
+        if (!food) {
+            res.status(404).json({ msg: "Food not found!" });
+            return;
+        }
+
         const name = Date.now();
 
         const uploadedImage = await cloudinary.uploader.upload(
@@ -54,32 +64,37 @@ export const uploadImage = async (req: Request, res: Response): Promise<void> =>
 
         if (uploadedImage) {
             const cloudImgPub = uploadedImage.public_id;
+            uploadedImageId = cloudImgPub;
 
             const response = await Food.findOneAndUpdate(
-                { _id: authReq.params.id, userId: authReq.userId },
+                foodFilter,
                 { image: cloudImgPub },
                 { new: true }
             );
 
-            if (authReq.body.previousImage) {
-                await cloudinary.uploader.destroy(
-                    authReq.body.previousImage,
-                    (error: Error | undefined, result: CloudinaryResult | undefined) => {
-                        if (error) {
-                            console.error("Error deleting image:", error);
-                        } else {
-                            console.log("Image deleted successfully:", result);
-                        }
-                    }
-                );
+            if (!response) {
+                throw new Error("Food image update failed");
+            }
+
+            // The new image is now persisted and must not be cleaned up on later errors.
+            uploadedImageId = undefined;
+            if (food.image && food.image !== cloudImgPub) {
+                await cloudinary.uploader.destroy(food.image);
             }
             res.status(200).send(response);
-            return 
+            return;
         }
 
         res.status(400).json({ msg: "Image upload failed!" });
     } catch (error) {
-        res.status(500).send(error);
+        if (uploadedImageId) {
+            try {
+                await cloudinary.uploader.destroy(uploadedImageId);
+            } catch (cleanupError) {
+                console.error("Error cleaning up uploaded image:", cleanupError);
+            }
+        }
+        res.status(500).json({ msg: "Image update failed!" });
     }
 };
 
