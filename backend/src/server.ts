@@ -6,7 +6,7 @@ import optionsRouter from "./routes/optionsRouter";
 import consumptionRouter from "./routes/consumptionRouter";
 import archiveRouter from "./routes/archiveRouter";
 import authRouter from "./routes/authRouter";
-import "./utils/mongodb";
+import { connectDatabase } from "./utils/mongodb";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { generalLimiter } from "./middleware/rate-limiter";
@@ -35,6 +35,20 @@ app.use("/api/", optionsRouter);
 app.use("/api/", consumptionRouter);
 app.use("/api/", archiveRouter);
 
-app.listen(PORT, ()=>{
-    console.log(`Server is listening on port: ${PORT}`);
-});
+export const startServer = async (): Promise<void> => {
+    try {
+        await connectDatabase();
+    } catch (error) {
+        console.error("Server startup failed:", (error as Error).message);
+        process.exitCode = 1;
+        return;
+    }
+
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port: ${PORT}`);
+    });
+};
+
+if (require.main === module) {
+    void startServer();
+}
