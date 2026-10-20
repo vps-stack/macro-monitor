@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/vps-stack/macro-monitor/compare/v1.0.1...v1.0.2) (2026-10-20)
+
+### Bug Fixes
+
+* **deps:** resolve production npm vulnerabilities ([37eab9e](https://github.com/vps-stack/macro-monitor/commit/37eab9e3a8a1099de248fc3a4a86d150a426301a))
+
 ## [1.0.1](https://github.com/vps-stack/macro-monitor/compare/v1.0.0...v1.0.1) (2026-10-20)
 
 ### Bug Fixes
