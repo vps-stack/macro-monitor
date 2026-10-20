@@ -10,6 +10,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    // Preserve the v6 behavior after upgrading typescript-eslint to v8.
+    '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none' }],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
