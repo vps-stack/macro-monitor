@@ -1,13 +1,20 @@
 {
   "name": "macromonitor",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": "^22.14.0 || >=24.10.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npm --prefix backend test",
+    "prepare": "husky",
+    "release": "semantic-release --no-ci",
+    "release:dry-run": "semantic-release --no-ci --dry-run"
   },
   "dependencies": {
     "html5-qrcode": "^2.3.8",
@@ -21,14 +28,26 @@
     "styled-components": "^6.1.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.10",
+    "@semantic-release/npm": "^13.2.0",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^5.1.2",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "husky": "^9.1.7",
+    "semantic-release": "^25.0.9",
     "typescript": "^5.0.2",
     "vite": "^7.3.6"
   }
