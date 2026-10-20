@@ -36,3 +36,9 @@ At this place, if you want, you can also store your daily consumption in the `ar
 **Frontend**: React with Vite, Typescript, SCSS, Toastify for message handling.  
 **Backend**: Express, MongoDB, Mongoose, Cloudinary for image uploads.  
 **Layout**: Figma
+
+## Releases
+
+Installation, Conventional Commits, einmaliger Ausgangstag und Aktivierung der
+automatischen Releases sind in der [Release-Anleitung](docs/releases.md) beschrieben.
+Nach Initialisierung startet ein Push auf `main` den Release-Job parallel zum Build.

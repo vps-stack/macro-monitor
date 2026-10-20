@@ -5,6 +5,49 @@ on:
     branches: [main]
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.13.1'
+
+      - name: Verify initial release baseline
+        run: |
+          if ! git show-ref --verify --quiet refs/tags/v1.0.0; then
+            echo "::error::Missing v1.0.0 baseline tag. Follow docs/releases.md before activating releases."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor refs/tags/v1.0.0 HEAD; then
+            echo "::error::The v1.0.0 baseline tag must point to an ancestor of this main commit."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Install backend dependencies for tests and release hooks
+        working-directory: backend
+        run: npm ci
+
+      - name: Run backend tests
+        run: npm test
+
+      - name: Run semantic-release
+        run: npx --no-install semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ubuntu-latest
     steps:
