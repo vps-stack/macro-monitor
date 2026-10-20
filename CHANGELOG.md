@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/vps-stack/macro-monitor/compare/v1.0.0...v1.0.1) (2026-10-20)
+
+### Bug Fixes
+
+* synchronize release dependencies in lockfile ([0609c05](https://github.com/vps-stack/macro-monitor/commit/0609c053e86c14a0712bc5414b81aafcfb8df534))
+
 # Changelog
 
 ## 1.0.0 — Versionsbasis
