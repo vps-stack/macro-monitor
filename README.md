@@ -33,12 +33,17 @@ At this place, if you want, you can also store your daily consumption in the `ar
 
 ## Technology
 
-**Frontend**: React with Vite, Typescript, SCSS, Toastify for message handling.  
-**Backend**: Express, MongoDB, Mongoose, Cloudinary for image uploads.  
-**Layout**: Figma
+- **Frontend**: React 18, TypeScript, Vite 7, and React Router 7, with Sass/SCSS and CSS Modules for styling.
+- **UI**: React Toastify for notifications, Lucide React for icons, and html5-qrcode for barcode scanning.
+- **Backend**: Node.js, Express 4, TypeScript, MongoDB, and Mongoose 8. Authentication uses JWTs in HTTP-only cookies and bcrypt for password hashing; Helmet, express-rate-limit, and express-validator provide security middleware and input validation.
+- **External services**: Cloudinary for image uploads, Open Food Facts for barcode lookups, and USDA FoodData Central for food searches.
+- **Development & delivery**: ESLint with TypeScript-ESLint, the Node.js test runner for backend tests, Husky and Commitlint for commit checks, semantic-release for versioning, and GitHub Actions for builds, releases, and deployment.
+- **Design**: Figma.
 
 ## Releases
 
-Installation, Conventional Commits, einmaliger Ausgangstag und Aktivierung der
-automatischen Releases sind in der [Release-Anleitung](docs/releases.md) beschrieben.
-Nach Initialisierung startet ein Push auf `main` den Release-Job parallel zum Build.
+See the [release guide](docs/releases.md) (in German) for installation, Conventional Commits,
+the initial baseline tag, and instructions for enabling automated releases.
+Once initialized, a push to `main` runs the release job in parallel with the build job.
+semantic-release uses Conventional Commits to determine the next version, update the changelog,
+and publish a GitHub release. The frontend and backend share the same version; packages are not published to npm.
