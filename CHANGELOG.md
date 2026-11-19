@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/vps-stack/macro-monitor/compare/v1.0.2...v1.0.3) (2026-11-19)
+
+### Bug Fixes
+
+* resolve backend vulnerabilities ([b7f7e56](https://github.com/vps-stack/macro-monitor/commit/b7f7e56971565bb4e0be90246dd9c7dba9e5ccc2))
+* resolve frontend vulnerabilities ([edf7e03](https://github.com/vps-stack/macro-monitor/commit/edf7e03b354af85dd290fcb7b1a88197ed7c63eb))
+
 ## [1.0.2](https://github.com/vps-stack/macro-monitor/compare/v1.0.1...v1.0.2) (2026-10-20)
 
 ### Bug Fixes
